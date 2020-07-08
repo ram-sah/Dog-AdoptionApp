@@ -1,5 +1,5 @@
 # PROJECT-1: App: Dog Adoption in Pennsylvania Website
-By: https://ram-sah.github.io/Dog-adoption/.
+By: https://ram-sah.github.io/Dog-AdoptionApp/.
 
 * This is an application that helps you select a dog breed then connects you to a local adoption organization in Pennsylvania.
 * User will be able to type in a specific location they choose if there is not a dog breed of their choice close to them.
