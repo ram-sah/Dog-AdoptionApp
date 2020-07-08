@@ -1,0 +1,144 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+* {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.sidenav-trigger {
+  color: #26a69a;
+}
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+  .parallax-container .section {
+    width: 100%;
+  }
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+.myButton {
+	background-color:#e8796a;
+	border-radius:28px;
+	border:1px solid #e8796a;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Georgia;
+	font-size:20px;
+	padding:6px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.myButton:hover {
+	background-color:#44c767;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+.myButton1 {
+	background-color:#11c09a;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Georgia;
+	font-size:20px;
+	padding:22px 10px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.myButton1:hover {
+	background-color:#e8796a;
+}
+.myButton1:active {
+	position:relative;
+	top:1px;
+}
+.myButton2 {
+	background-color:#11c09a;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Georgia;
+	font-size:20px;
+	padding:6px 10px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.myButton2:hover {
+	background-color:#e8796a;
+}
+.myButton2:active {
+	position:relative;
+	top:1px;
+}
+a:hover {
+	color: blue;
+  }
+.clock {
+	text-align: left;
+	color:blue;
+	float: right;
+	padding-right: 2rem;
+	font-family:Georgia;
+	margin-top: 0px;	
+}	
+
+.myButton3 {	
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Georgia;
+	font-size:20px;
+	float:left;	
+	margin-left: 2rem;
+	margin-right: 20rem;
+}
