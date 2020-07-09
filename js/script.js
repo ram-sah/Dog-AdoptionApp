@@ -114,50 +114,14 @@ function currentLocation() {
   });
 };
 
-// google search location 
-
-//var googleURL : "https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key="+googleKey;
-// var googleKey= "AIzaSyDAFNp-kiQJKedi-e9ntOpVBihzfQXu7VM";
-// var proxy = "https://cors-anywhere.herokuapp.com/";
-// var queryURL =
-//   "https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Universal+Studios+Hollywood&key="+googleKey;
-// $.ajax({
-//   url: proxy + queryURL,
-//   method: "GET", 
-// }).then(function (response) {
-//   console.log("google Response: ");
-//   console.log(response);
-
-// });
-
 //mapBox for location search 
 
 // For driving= "pk.eyJ1IjoibW9oYW4yMDM2IiwiYSI6ImNrY2R4ajFyMDAwZTAycG53M3g1MjB6dGgifQ.B4Yjcty24OLz9Xmn8-Gj8g"
 
 $(".myGps").on("click", function (event) {
   event.preventDefault();
-  // console.log("myGps Checking ");
-
-  // var inputCity = $("#destiInput").val()
-  // var mapGpsToken = "pk.eyJ1IjoibW9oYW4yMDM2IiwiYSI6ImNrY2R4ajFyMDAwZTAycG53M3g1MjB6dGgifQ.B4Yjcty24OLz9Xmn8-Gj8g";
-  // var proxy = "https://cors-anywhere.herokuapp.com/";
-  // var queryURL =
-  //   "https://api.mapbox.com/geocoding/v5/mapbox.places/" + inputCity + ".json?access_token=" + mapGpsToken;
-  // $.ajax({
-  //   url: proxy + queryURL,
-  //   method: "GET",
-  //   // data: {
-  //   //   location: $("#destiInput").val(),      
-  //   // },
-  // }).then(function (response) {
-  //   console.log("Map Response: ");
-  //   console.log(response);
-  //   var dest = $("<div>");
-  //   dest.text(JSON.stringify(response));
-  //   $("#destiList").append(dest);
-
-  // });
-
+  
+  //GEO API for Navigation
   $.ajax({
     url: 'https://freegeoip.app/json/',
     method: 'GET',
@@ -222,21 +186,19 @@ $(".myGps").on("click", function (event) {
     });
   });
 
-
 // API Key for GEO Coding 
 var qu = "";
- var geoAPIKey = '03350c02af0f05053c20f3f520cf87595037f73' ,
-//  Var geoURl = "https://api.geocod.io/v1.6/api_endpoint_here?api_key=" + geoAPIKey;
+var geoAPIKey = '03350c02af0f05053c20f3f520cf87595037f73'; 
  
  //'https://geocoder.cit.api.here.com/6.2/geocode.json?searchtext=200%20S%20Mathilda%20Sunnyvale%20CA&app_ id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg&gen=8'
 
- $.ajax({
-  url: geoURL,  
+$.ajax({
+  url: "https://api.geocod.io/v1.6/api_endpoint_here?api_key=" + geoAPIKey, 
   method: 'GET',
   }).then(function (response) {
   console.log(response);
 
   });
-
+ 
 });
 
