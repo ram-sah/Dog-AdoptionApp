@@ -223,5 +223,20 @@ $(".myGps").on("click", function (event) {
   });
 
 
+// API Key for GEO Coding 
+var qu = "";
+ var geoAPIKey = '03350c02af0f05053c20f3f520cf87595037f73' ,
+//  Var geoURl = "https://api.geocod.io/v1.6/api_endpoint_here?api_key=" + geoAPIKey;
+ 
+ //'https://geocoder.cit.api.here.com/6.2/geocode.json?searchtext=200%20S%20Mathilda%20Sunnyvale%20CA&app_ id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg&gen=8'
+
+ $.ajax({
+  url: geoURL,  
+  method: 'GET',
+  }).then(function (response) {
+  console.log(response);
+
+  });
+
 });
 

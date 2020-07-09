@@ -34,5 +34,13 @@ By: https://ram-sah.github.io/Dog-AdoptionApp/.
 
 ## Pseudocode : 
 
+* This app presented current location with navigation 
+* Open Dog Adoption Center main page Click on Get Started button to get in search page.
+* search for a Dog Adoption center to presented with current location of that city.
+* Search city display the list of Adoption centers available on the city. 
+* View pictures of dog and compare for selection right Dog.
+ 
+## Flow-Chart : 
+
 
 
