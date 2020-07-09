@@ -1,95 +1,151 @@
 (function ($) {
-    $(function () {
-      $(".sidenav").sidenav();
-      $(".parallax").parallax();
-    }); // end of document ready
-  })(jQuery); // end of jQuery name space
-  var token;
-  var queryURL =
-    "https://cors-anywhere.herokuapp.com/https://api.petfinder.com/v2/oauth2/token";
+  $(function () {
+    $(".sidenav").sidenav();
+    $(".parallax").parallax();
+  }); // end of document ready
+})(jQuery); // end of jQuery name space
+var token;
+var queryURL =
+  "https://cors-anywhere.herokuapp.com/https://api.petfinder.com/v2/oauth2/token";
+$.ajax({
+  url: queryURL,
+  method: "POST",
+  data: {
+    grant_type: "client_credentials",
+    client_id: "jwiHAizfWoRDRFwMQBD46rrrt7RaSXvNMjMDfgDuae8O7eFIEj",
+    client_secret: "ME14Jzyaaa4mwLFclDqoVZuw1GFPexThK5Y7zVVs",
+  },
+}).then(function (response) {
+  console.log(response);
+  token = response.access_token;
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  var elems = document.querySelectorAll(".carousel");
+  var options = [];
+  var instances = M.Carousel.init(elems, options);
+});
+
+//jQuery to find dogs adoption center 
+
+$(document).ready(function () {
+  $(".carousel").carousel();
+});
+
+var queryURL = `https://cors-anywhere.herokuapp.com/https://api.petfinder.com/v2/organizations`;
+
+$(".myButton").on("click", function (event) {
+  event.preventDefault();
+  console.log("myButton click");
+
   $.ajax({
     url: queryURL,
-    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method: "GET",
     data: {
-      grant_type: "client_credentials",
-      client_id: "jwiHAizfWoRDRFwMQBD46rrrt7RaSXvNMjMDfgDuae8O7eFIEj",
-      client_secret: "ME14Jzyaaa4mwLFclDqoVZuw1GFPexThK5Y7zVVs",
+      location: $("#cityInput").val(),
+      limit: 5
     },
   }).then(function (response) {
     console.log(response);
-    token = response.access_token;
+     for (var i = 0; i < 5; + i++){
+
+    var el = $("<div>");
+    el.text(JSON.stringify(response));
+    var name = ("name: " + response.name[i]);
+    var photo = ("pictures: " + response.photos[i]);
+    var address = ("Addresss: " + response.address[i]);
+    el.append(name).append(photo).append(address[i]);
+    $("#cityList").append(el);
+
+     }
+    
+    
   });
-  
-  document.addEventListener("DOMContentLoaded", function () {
-    var elems = document.querySelectorAll(".carousel");
-    var options = [];
-    var instances = M.Carousel.init(elems, options);
+});
+
+
+
+$(window).on('load', function () {
+  currentLocation();
+});
+
+// API Key for current date /time  
+var APIKey = "09e0d7e534e41ce68ba5f2577fa5f760";
+var q = "";
+var now = moment();
+//Date and time formate for header
+var currentDate = now.format('MMMM Do YYYY || h:mm a');
+
+//Function to get weather details 
+function getWeather(q) {
+  var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + q + "&units=imperial&appid=" + APIKey;
+  $.ajax({
+    // gets the current weather info
+    url: queryURL,
+    method: "GET",
+
+  }).then(function (response) {
+    console.log(response)
+    $(".clock").append($("<h5> Current Location : " + response.name + ' (' + currentDate + ')' + "</h5>"));
   });
-  
-  // Or with jQuery
-  
-  $(document).ready(function () {
-    $(".carousel").carousel();
+}
+
+// Display Current Locaion 
+function currentLocation() {
+  $.ajax({
+    url: "https://freegeoip.app/json/",
+    method: "GET",
+  }).then(function (response) {
+    q = response.city || 'philadelphia';
+    console.log(q);
+    getWeather(q);
   });
-  
-  var queryURL = `https://cors-anywhere.herokuapp.com/https://api.petfinder.com/v2/organizations`;
-  
-  $(".myButton").on("click", function (event) {
-    event.preventDefault();
-    console.log("myButton click");
-  
-    $.ajax({
-      url: queryURL,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      method: "GET",
-      data: {
-        location: $("#cityInput").val(),
-        limit : 10
-      },
-    }).then(function (response) {
-      console.log(response);
-      var el = $("<div>");
-      el.text(JSON.stringify(response));
-      $("#cityList").append(el);
-    });
+};
+
+// google search location 
+
+//var googleURL : "https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key="+googleKey;
+// var googleKey= "AIzaSyDAFNp-kiQJKedi-e9ntOpVBihzfQXu7VM";
+// var proxy = "https://cors-anywhere.herokuapp.com/";
+// var queryURL =
+//   "https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Universal+Studios+Hollywood&key="+googleKey;
+// $.ajax({
+//   url: proxy + queryURL,
+//   method: "GET", 
+// }).then(function (response) {
+//   console.log("google Response: ");
+//   console.log(response);
+
+// });
+
+//mapBox for location search 
+
+// For driving= "pk.eyJ1IjoibW9oYW4yMDM2IiwiYSI6ImNrY2R4ajFyMDAwZTAycG53M3g1MjB6dGgifQ.B4Yjcty24OLz9Xmn8-Gj8g"
+
+$(".myGps").on("click", function (event) {
+  event.preventDefault();
+  console.log("myGps Checking ");
+
+  var inputCity = $("#destiInput").val()
+  var mapGpsToken = "pk.eyJ1IjoibW9oYW4yMDM2IiwiYSI6ImNrY2R4ajFyMDAwZTAycG53M3g1MjB6dGgifQ.B4Yjcty24OLz9Xmn8-Gj8g";
+  var proxy = "https://cors-anywhere.herokuapp.com/";
+  var queryURL =
+    "https://api.mapbox.com/geocoding/v5/mapbox.places/" + inputCity + ".json?access_token=" + mapGpsToken;
+  $.ajax({
+    url: proxy + queryURL,
+    method: "GET",
+    // data: {
+    //   location: $("#destiInput").val(),      
+    // },
+  }).then(function (response) {
+    console.log("Map Response: ");
+    console.log(response);
+    var dest = $("<div>");
+    dest.text(JSON.stringify(response));
+    $("#destiList").append(dest);
+
   });
-  
-  $(window).on('load', function () {
-    currentLocation();
-  });
-  
-  // API Key for current date /time  
-  var APIKey = "09e0d7e534e41ce68ba5f2577fa5f760";
-  var q = "";
-  var now = moment();
-  //Date and time formate for header
-  var currentDate = now.format('MMMM Do YYYY || h:mm a');
-  
-  //Function to get weather details 
-  function getWeather(q) {
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + q + "&units=imperial&appid=" + APIKey;
-    $.ajax({
-      // gets the current weather info
-      url: queryURL,
-      method: "GET",
-  
-    }).then(function (response) {
-      console.log(response)    
-      $(".clock").append($("<h5> Current Location : " + response.name + ' (' + currentDate + ')' + "</h5>"));   
-    });
-  }
-  
-  // Display Current Locaion 
-  function currentLocation() {
-    $.ajax({
-      url: "https://freegeoip.app/json/",
-      method: "GET",
-    }).then(function (response) {
-      q = response.city || 'philadelphia';
-      console.log(q);
-      getWeather(q);
-    });
-  };
-  
+});
