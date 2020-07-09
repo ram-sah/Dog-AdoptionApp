@@ -3,7 +3,7 @@
     $(".sidenav").sidenav();
     $(".parallax").parallax();
   });
-})(jQuery); 
+})(jQuery);
 var token;
 var queryURL =
   "https://cors-anywhere.herokuapp.com/https://api.petfinder.com/v2/oauth2/token";
@@ -50,33 +50,31 @@ $(".myButton").on("click", function (event) {
     },
   }).then(function (response) {
     console.log(response);
-     for (var i = 0; i < 10; i++){
+    for (var i = 0; i < 10; i++) {
 
-    var el = $("<div>");
-    // el.text(JSON.stringify(response));
-    var name =  $("<h6>" + ("Name: " + response.organizations[i].name)+ "</h6>");
-    try{
-      
-      var photoURL = response.organizations[i].photos[0].medium;
-      var photo = `<img src="${photoURL}">`
-    }catch(err) {
-      var photo = $("<p>" +  `<img src="./Assets/dog-pictures/41. Bichon Frise.jpg">` + "</p>");
-    }   
-    var address = $("<p>" + ("City: " + response.organizations[i].address.city)+ "</p>");
-    var address1 = $("<p>" + ("Addresss: " + response.organizations[i].address.address1)+ "</p>");
-    var zipCode = $("<p>" + ("ZipCode :" + response.organizations[i].address.postcode) + "</p>");
-    var url = `<p> URL:<a href="${response.organizations[i].url}">${response.organizations[i].url}</a> </p>`;
-    el.append(photo).append(name).append(address).append(address1).append(zipCode).append(url);
-    $("#cityList").append(el);
+      var el = $("<div>");
+      // el.text(JSON.stringify(response));
+      var name = $("<h6>" + ("Name: " + response.organizations[i].name) + "</h6>");
+      try {
 
-     }
-    
-    
+        var photoURL = response.organizations[i].photos[0].medium;
+        var photo = `<img src="${photoURL}">`
+      } catch (err) {
+        var photo = $("<p>" + `<img src="./Assets/dog-pictures/41. Bichon Frise.jpg">` + "</p>");
+      }
+      var address = $("<p>" + ("City: " + response.organizations[i].address.city) + "</p>");
+      var address1 = $("<p>" + ("Addresss: " + response.organizations[i].address.address1) + "</p>");
+      var zipCode = $("<p>" + ("ZipCode :" + response.organizations[i].address.postcode) + "</p>");
+      var url = `<p> URL:<a href="${response.organizations[i].url}">${response.organizations[i].url}</a> </p>`;
+      el.append(photo).append(name).append(address).append(address1).append(zipCode).append(url);
+      $("#cityList").append(el);
+
+    }
+
   });
 });
 
-
-
+// windows load function for current loation 
 $(window).on('load', function () {
   currentLocation();
 });
@@ -114,10 +112,8 @@ function currentLocation() {
   });
 };
 
-//mapBox for location search 
-
-// For driving= "pk.eyJ1IjoibW9oYW4yMDM2IiwiYSI6ImNrY2R4ajFyMDAwZTAycG53M3g1MjB6dGgifQ.B4Yjcty24OLz9Xmn8-Gj8g"
-
+//Using mapBox to find current location  and destination Coordinate
+var geoAPIKey = '03350c02af0f05053c20f3f520cf87595037f73'; 
 $(".myGps").on("click", function (event) {
   event.preventDefault();
   
@@ -126,13 +122,21 @@ $(".myGps").on("click", function (event) {
     url: 'https://freegeoip.app/json/',
     method: 'GET',
   }).then(function (res) {
+    var q = $("#destiInput").val()
+    $.ajax({
+      url: `https://api.geocod.io/v1.6/geocode?q=${q}&api_key=` + geoAPIKey, 
+      method: 'GET',
+      }).then(function (response) {
+      console.log(response);
+
     mapboxgl.accessToken =
       'pk.eyJ1IjoibW9oYW4yMDM2IiwiYSI6ImNrY2R4ajFyMDAwZTAycG53M3g1MjB6dGgifQ.B4Yjcty24OLz9Xmn8-Gj8g';
     var map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/light-v10',
-      center: [-96, 37.8],
-      zoom: 2,
+      // center: [-96, 37.8],
+      center: [response.results[0].location.lng, response.results[0].location.lat],
+      zoom: 5,
     });
 
     map.on('load', function () {
@@ -165,6 +169,18 @@ $(".myGps").on("click", function (event) {
                 icon: 'harbor',
               },
             },
+            {
+              // feature for Mapbox DC
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [response.results[0].location.lng, response.results[0].location.lat],
+              },
+              properties: {
+                title: 'Destination',
+                icon: 'monument',
+              },
+            },
           ],
         },
       });
@@ -185,16 +201,6 @@ $(".myGps").on("click", function (event) {
       });
     });
   });
-
-// API Key for GEO Coding 
-var geoAPIKey = '03350c02af0f05053c20f3f520cf87595037f73'; 
-var q = $("#destiInput").val()
-$.ajax({
-  url: `https://api.geocod.io/v1.6/geocode?q=${q}&api_key=` + geoAPIKey, 
-  method: 'GET',
-  }).then(function (response) {
-  console.log( response);
+    });
   });
- 
-});
 
