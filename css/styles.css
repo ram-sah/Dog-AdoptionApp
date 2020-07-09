@@ -61,6 +61,7 @@ footer.page-footer {
 }
 .gps{
 	float: right;
+	
 }
 .myGps{
 	background-color:#e8796a;
@@ -168,9 +169,12 @@ a:hover {
 #map{
 	float: right;
 }
-.searchCol2{
+.searchCol{
 	
+	float: left;
+	display: block
+		
+}
+.searchCol1{
 	float: right;
-	
-	
 }

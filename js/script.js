@@ -46,18 +46,27 @@ $(".myButton").on("click", function (event) {
     method: "GET",
     data: {
       location: $("#cityInput").val(),
-      limit: 5
+      limit: 10
     },
   }).then(function (response) {
     console.log(response);
-     for (var i = 0; i < 5; + i++){
+     for (var i = 0; i < 10; i++){
 
     var el = $("<div>");
-    el.text(JSON.stringify(response));
-    var name = ("name: " + response.name[i]);
-    var photo = ("pictures: " + response.photos[i]);
-    var address = ("Addresss: " + response.address[i]);
-    el.append(name).append(photo).append(address[i]);
+    // el.text(JSON.stringify(response));
+    var name =  $("<h6>" + ("Name: " + response.organizations[i].name)+ "</h6>");
+    try{
+      
+      var photoURL = response.organizations[i].photos[0].medium;
+      var photo = `<img src="${photoURL}">`
+    }catch(err) {
+      var photo = $("<p>" +  `<img src="./Assets/dog-pictures/41. Bichon Frise.jpg">` + "</p>");
+    }   
+    var address = $("<p>" + ("City: " + response.organizations[i].address.city)+ "</p>");
+    var address1 = $("<p>" + ("Addresss: " + response.organizations[i].address.address1)+ "</p>");
+    var zipCode = $("<p>" + ("ZipCode :" + response.organizations[i].address.postcode) + "</p>");
+    var url = `<p> URL:<a href="${response.organizations[i].url}">${response.organizations[i].url}</a> </p>`;
+    el.append(photo).append(name).append(address).append(address1).append(zipCode).append(url);
     $("#cityList").append(el);
 
      }
@@ -127,25 +136,92 @@ function currentLocation() {
 
 $(".myGps").on("click", function (event) {
   event.preventDefault();
-  console.log("myGps Checking ");
+  // console.log("myGps Checking ");
 
-  var inputCity = $("#destiInput").val()
-  var mapGpsToken = "pk.eyJ1IjoibW9oYW4yMDM2IiwiYSI6ImNrY2R4ajFyMDAwZTAycG53M3g1MjB6dGgifQ.B4Yjcty24OLz9Xmn8-Gj8g";
-  var proxy = "https://cors-anywhere.herokuapp.com/";
-  var queryURL =
-    "https://api.mapbox.com/geocoding/v5/mapbox.places/" + inputCity + ".json?access_token=" + mapGpsToken;
+  // var inputCity = $("#destiInput").val()
+  // var mapGpsToken = "pk.eyJ1IjoibW9oYW4yMDM2IiwiYSI6ImNrY2R4ajFyMDAwZTAycG53M3g1MjB6dGgifQ.B4Yjcty24OLz9Xmn8-Gj8g";
+  // var proxy = "https://cors-anywhere.herokuapp.com/";
+  // var queryURL =
+  //   "https://api.mapbox.com/geocoding/v5/mapbox.places/" + inputCity + ".json?access_token=" + mapGpsToken;
+  // $.ajax({
+  //   url: proxy + queryURL,
+  //   method: "GET",
+  //   // data: {
+  //   //   location: $("#destiInput").val(),      
+  //   // },
+  // }).then(function (response) {
+  //   console.log("Map Response: ");
+  //   console.log(response);
+  //   var dest = $("<div>");
+  //   dest.text(JSON.stringify(response));
+  //   $("#destiList").append(dest);
+
+  // });
+
   $.ajax({
-    url: proxy + queryURL,
-    method: "GET",
-    // data: {
-    //   location: $("#destiInput").val(),      
-    // },
-  }).then(function (response) {
-    console.log("Map Response: ");
-    console.log(response);
-    var dest = $("<div>");
-    dest.text(JSON.stringify(response));
-    $("#destiList").append(dest);
+    url: 'https://freegeoip.app/json/',
+    method: 'GET',
+  }).then(function (res) {
+    mapboxgl.accessToken =
+      'pk.eyJ1IjoibW9oYW4yMDM2IiwiYSI6ImNrY2R4ajFyMDAwZTAycG53M3g1MjB6dGgifQ.B4Yjcty24OLz9Xmn8-Gj8g';
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/light-v10',
+      center: [-96, 37.8],
+      zoom: 2,
+    });
 
+    map.on('load', function () {
+      map.addSource('points', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            {
+              // feature for Mapbox DC
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [res.longitude, res.latitude],
+              },
+              properties: {
+                title: 'Current Location',
+                icon: 'monument',
+              },
+            },
+            {
+              // feature for Mapbox SF
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-122.414, 37.776],
+              },
+              properties: {
+                title: 'Mapbox SF',
+                icon: 'harbor',
+              },
+            },
+          ],
+        },
+      });
+      map.addLayer({
+        id: 'points',
+        type: 'symbol',
+        source: 'points',
+        layout: {
+          // get the icon name from the source's "icon" property
+          // concatenate the name to get an icon from the style's sprite sheet
+          'icon-image': ['concat', ['get', 'icon'], '-15'],
+          // get the title name from the source's "title" property
+          'text-field': ['get', 'title'],
+          'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+          'text-offset': [0, 0.6],
+          'text-anchor': 'top',
+        },
+      });
+    });
   });
+
+
 });
+
